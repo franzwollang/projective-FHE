@@ -39,6 +39,21 @@ if ! dpkg -l | grep -q libeigen3-dev; then
     sudo apt-get install -y libeigen3-dev -qq
 fi
 
+# Install Eigen3 from source if system package doesn't provide CMake config
+if [ ! -f "/usr/share/eigen3/cmake/Eigen3Config.cmake" ] && [ ! -f "/usr/lib/cmake/eigen3/Eigen3Config.cmake" ]; then
+    echo "🔧 Installing Eigen3 from source for CMake compatibility..."
+    if [ ! -d "eigen-3.4.0" ]; then
+        wget -q https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.gz
+        tar -xzf eigen-3.4.0.tar.gz
+    fi
+    cd eigen-3.4.0
+    mkdir -p build && cd build
+    cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local
+    sudo make install
+    cd "$WORKSPACE"
+    echo "✅ Eigen3 installed from source with CMake support"
+fi
+
 # Build OpenFHE with CUDA if not already built
 if [ -f "/usr/local/lib/libOPENFHEcore.so" ]; then
     echo "✅ OpenFHE already installed system-wide, skipping build..."
@@ -115,7 +130,7 @@ else
         -DCMAKE_BUILD_TYPE=Release \
         -DENABLE_DIAGNOSTICS=OFF \
         -DUSE_OPENFHE_GPU=ON \
-        -DCMAKE_PREFIX_PATH=/usr/local \
+        -DCMAKE_PREFIX_PATH="/usr/local;/usr/share/eigen3" \
         -DOpenFHE_DIR=/usr/local/lib/OpenFHE
 
     # Build benchmark

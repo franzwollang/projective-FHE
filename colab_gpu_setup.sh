@@ -97,12 +97,14 @@ else
     rm -rf build_gpu
     mkdir -p build_gpu && cd build_gpu
 
-    # Configure with GPU support
+    # Configure with GPU support (force system-wide OpenFHE)
     cmake .. \
         -DCMAKE_BUILD_TYPE=Release \
         -DENABLE_DIAGNOSTICS=OFF \
         -DUSE_OPENFHE_GPU=ON \
-        -DCMAKE_PREFIX_PATH=/usr/local
+        -DCMAKE_PREFIX_PATH=/usr/local \
+        -DOpenFHE_DIR=/usr/local/lib/OpenFHE \
+        -DCMAKE_IGNORE_PATH="$PWD/../openfhe-install"
 
     # Build benchmark
     make benchmark_modes -j4

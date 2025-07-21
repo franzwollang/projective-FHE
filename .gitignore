@@ -1,0 +1,58 @@
+# CMake build artifacts
+build/
+build_*/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+!CMakeLists.txt
+
+# Build directories
+**/build/
+**/build_*/
+**/build_gpu/
+**/build_cpu/
+
+# Compiled binaries
+*.o
+*.so
+*.dylib
+*.dll
+*.exe
+benchmark_modes
+pipeline
+stress_test
+params
+encoding
+projection
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.csv
+
+# OpenFHE specific
+openfhe-src/
+openfhe-install/
+openfhe-development/ 

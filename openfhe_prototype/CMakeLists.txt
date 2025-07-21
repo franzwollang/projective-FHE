@@ -45,11 +45,13 @@ if (OpenFHE_FOUND)
     
     # Ensure we have the correct include directories
     if(NOT OPENFHE_INCLUDES)
-        set(OPENFHE_INCLUDES "/usr/local/include;/usr/local/include/openfhe")
+        set(OPENFHE_INCLUDES "/usr/local/include;/usr/local/include/openfhe;/usr/local/include/openfhe/core;/usr/local/include/openfhe/pke")
         message(STATUS "Using default system include paths: ${OPENFHE_INCLUDES}")
     else()
-        # Add openfhe subdirectory to include path
+        # Add openfhe subdirectories to include path
         list(APPEND OPENFHE_INCLUDES "/usr/local/include/openfhe")
+        list(APPEND OPENFHE_INCLUDES "/usr/local/include/openfhe/core")
+        list(APPEND OPENFHE_INCLUDES "/usr/local/include/openfhe/pke")
         message(STATUS "Enhanced include paths: ${OPENFHE_INCLUDES}")
     endif()
     

@@ -87,6 +87,12 @@ fi
 echo "🏗️ Building GPU benchmark..."
 cd projective-FHE/openfhe_prototype
 
+# Remove any local OpenFHE installation that conflicts with system-wide install
+if [ -d "openfhe-install" ]; then
+    echo "🧹 Removing conflicting local OpenFHE installation..."
+    rm -rf openfhe-install
+fi
+
 # Check if already built
 if [ -f "build_gpu/benchmark_modes" ]; then
     echo "✅ GPU benchmark already built, skipping..."
@@ -97,14 +103,13 @@ else
     rm -rf build_gpu
     mkdir -p build_gpu && cd build_gpu
 
-    # Configure with GPU support (force system-wide OpenFHE)
+    # Configure with GPU support (use system-wide OpenFHE only)
     cmake .. \
         -DCMAKE_BUILD_TYPE=Release \
         -DENABLE_DIAGNOSTICS=OFF \
         -DUSE_OPENFHE_GPU=ON \
         -DCMAKE_PREFIX_PATH=/usr/local \
-        -DOpenFHE_DIR=/usr/local/lib/OpenFHE \
-        -DCMAKE_IGNORE_PATH="$PWD/../openfhe-install"
+        -DOpenFHE_DIR=/usr/local/lib/OpenFHE
 
     # Build benchmark
     make benchmark_modes -j4

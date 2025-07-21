@@ -6,7 +6,7 @@
  */
 
 #ifndef MOCK_OPENFHE
-#include "openfhe.h"
+#include "openfhe/openfhe.h"
 #else
 #include "mock_openfhe.h"
 #endif

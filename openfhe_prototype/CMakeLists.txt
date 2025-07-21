@@ -39,6 +39,10 @@ if (OpenFHE_FOUND)
     set(OPENFHE_INCLUDES ${OPENFHE_INCLUDE})
     set(OPENFHE_LIBS ${OPENFHE_SHARED_LIBRARIES})
     
+    # Debug: Print OpenFHE include directories
+    message(STATUS "OpenFHE include directories: ${OPENFHE_INCLUDE}")
+    message(STATUS "OpenFHE libraries: ${OPENFHE_SHARED_LIBRARIES}")
+    
     # Configure OpenFHE with OpenMP if requested
     if(USE_OPENFHE_OMP)
         find_package(OpenMP)

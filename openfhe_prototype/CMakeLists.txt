@@ -142,13 +142,19 @@ target_compile_definitions(fhe_pipeline PRIVATE BUILD_AS_LIBRARY=1)
 add_executable(pipeline pipeline.cpp)
 target_include_directories(pipeline PRIVATE ${OPENFHE_INCLUDES})
 if(OpenFHE_FOUND)
-    target_link_libraries(pipeline openfhe_utils ${OPENFHE_LIBS}
-        $<$<BOOL:${USE_OPENFHE_GPU}>:OPENFHEgpu>
-    )
+    target_link_libraries(pipeline openfhe_utils ${OPENFHE_LIBS})
+    # Only link GPU library if it actually exists
+    if(USE_OPENFHE_GPU)
+        find_library(OPENFHE_GPU_LIB OPENFHEgpu PATHS /usr/local/lib)
+        if(OPENFHE_GPU_LIB)
+            target_link_libraries(pipeline ${OPENFHE_GPU_LIB})
+            message(STATUS "Linking with OpenFHE GPU library: ${OPENFHE_GPU_LIB}")
+        else()
+            message(WARNING "GPU support requested but OPENFHEgpu library not found - building without GPU")
+        endif()
+    endif()
 else()
-    target_link_libraries(pipeline openfhe_utils
-        $<$<BOOL:${USE_OPENFHE_GPU}>:OPENFHEgpu>
-    )
+    target_link_libraries(pipeline openfhe_utils)
 endif()
 target_compile_definitions(pipeline PRIVATE BUILD_AS_LIBRARY=0)
 
@@ -169,11 +175,17 @@ target_link_libraries(syntax_test openfhe_utils)
 add_executable(benchmark_modes benchmark_modes.cpp $<TARGET_OBJECTS:fhe_pipeline>)
 target_include_directories(benchmark_modes PRIVATE ${OPENFHE_INCLUDES})
 if(OpenFHE_FOUND)
-    target_link_libraries(benchmark_modes openfhe_utils ${OPENFHE_LIBS}
-        $<$<BOOL:${USE_OPENFHE_GPU}>:OPENFHEgpu>
-    )
+    target_link_libraries(benchmark_modes openfhe_utils ${OPENFHE_LIBS})
+    # Only link GPU library if it actually exists
+    if(USE_OPENFHE_GPU)
+        find_library(OPENFHE_GPU_LIB OPENFHEgpu PATHS /usr/local/lib)
+        if(OPENFHE_GPU_LIB)
+            target_link_libraries(benchmark_modes ${OPENFHE_GPU_LIB})
+            message(STATUS "Linking benchmark_modes with OpenFHE GPU library: ${OPENFHE_GPU_LIB}")
+        else()
+            message(WARNING "GPU support requested but OPENFHEgpu library not found - building benchmark without GPU")
+        endif()
+    endif()
 else()
-    target_link_libraries(benchmark_modes openfhe_utils
-        $<$<BOOL:${USE_OPENFHE_GPU}>:OPENFHEgpu>
-    )
+    target_link_libraries(benchmark_modes openfhe_utils)
 endif() 

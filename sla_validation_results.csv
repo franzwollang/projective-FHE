@@ -1,0 +1,5 @@
+Tier,k,T,p,p/T Ratio (%),Sigma Bits,t_param,Analytical Eq (Δ^2),Empirical Eq (Δ^2)
+1. Micro-Latency,10,55,33,60.0,10,4096,0.002399,0.400000
+2. Standard Interactive,20,210,128,61.0,10,4096,0.002768,0.300000
+3. High-Throughput,30,465,283,60.9,10,4096,0.002909,0.300000
+4. High-Precision,20,210,189,90.0,11,8192,0.000986,0.250000

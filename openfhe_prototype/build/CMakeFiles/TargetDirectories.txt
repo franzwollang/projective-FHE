@@ -1,0 +1,9 @@
+/Users/franzwollang/Desktop/Code/@distributedsystem/FHE/code/openfhe_prototype/build/CMakeFiles/openfhe_utils.dir
+/Users/franzwollang/Desktop/Code/@distributedsystem/FHE/code/openfhe_prototype/build/CMakeFiles/params.dir
+/Users/franzwollang/Desktop/Code/@distributedsystem/FHE/code/openfhe_prototype/build/CMakeFiles/fhe_pipeline.dir
+/Users/franzwollang/Desktop/Code/@distributedsystem/FHE/code/openfhe_prototype/build/CMakeFiles/pipeline.dir
+/Users/franzwollang/Desktop/Code/@distributedsystem/FHE/code/openfhe_prototype/build/CMakeFiles/test_parity.dir
+/Users/franzwollang/Desktop/Code/@distributedsystem/FHE/code/openfhe_prototype/build/CMakeFiles/syntax_test.dir
+/Users/franzwollang/Desktop/Code/@distributedsystem/FHE/code/openfhe_prototype/build/CMakeFiles/benchmark_modes.dir
+/Users/franzwollang/Desktop/Code/@distributedsystem/FHE/code/openfhe_prototype/build/CMakeFiles/edit_cache.dir
+/Users/franzwollang/Desktop/Code/@distributedsystem/FHE/code/openfhe_prototype/build/CMakeFiles/rebuild_cache.dir

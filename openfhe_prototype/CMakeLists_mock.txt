@@ -1,0 +1,18 @@
+cmake_minimum_required(VERSION 3.12)
+project(openfhe_prototype_syntax_check)
+
+# Set C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Compiler flags
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -Wall -Wno-unused-parameter -DMOCK_OPENFHE")
+
+# Add include directory for mock
+include_directories(.)
+
+# Create a simple syntax test executable
+add_executable(syntax_test 
+    utils.cpp 
+    syntax_test.cpp
+) 

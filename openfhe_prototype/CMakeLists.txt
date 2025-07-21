@@ -56,6 +56,11 @@ if (OpenFHE_FOUND)
         message(STATUS "Enhanced complete include paths: ${OPENFHE_INCLUDES}")
     endif()
     
+    # Add global include directories for all targets
+    foreach(INCLUDE_PATH ${OPENFHE_INCLUDES})
+        include_directories(${INCLUDE_PATH})
+    endforeach()
+    
     # Configure OpenFHE with OpenMP if requested
     if(USE_OPENFHE_OMP)
         find_package(OpenMP)

@@ -34,12 +34,6 @@ The finite-field simulation implements the complete `mult->project` cycle over G
 
 These simulations validated the basic projection mathematics in floating-point arithmetic before tackling finite-field implementation challenges.
 
-#### 3. TenSEAL Integration (`experiments/tenseal/`)
-
-**Status: EXPERIMENTAL** - Future work
-
-Planned integration with the TenSEAL library for practical FHE operations.
-
 ### Analysis Tools (`analysis/`)
 
 Debug scripts for investigating noise sources, matrix conditioning, and projection accuracy:
@@ -104,7 +98,6 @@ QC-MDS matrices are generated using cryptographically strong pseudorandom seeds 
 
 - [ ] Performance optimization of projection kernels
 - [ ] Integration with hardware-accelerated FFT libraries
-- [ ] TenSEAL backend implementation
 - [ ] Circuit depth analysis for complex applications
 
 ### Future Work

@@ -30,7 +30,7 @@ nvidia-smi --query-gpu=name,compute_cap --format=csv,noheader
 # Install dependencies
 echo "🔧 Installing build dependencies..."
 sudo apt-get update -qq
-sudo apt-get install -y build-essential cmake ninja-build git libomp-dev wget -qq
+sudo apt-get install -y build-essential cmake ninja-build git libomp-dev wget libeigen3-dev pkg-config -qq
 
 # Build OpenFHE with CUDA if not already built
 if [ -f "/usr/local/lib/libOPENFHEcore.so" ]; then

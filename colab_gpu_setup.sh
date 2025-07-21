@@ -58,8 +58,10 @@ fi
 if [ -f "/usr/local/lib/libOPENFHEcore.so" ] && [ -f "/usr/local/lib/libOPENFHEgpu.so" ]; then
     echo "✅ OpenFHE with GPU support already installed system-wide, skipping build..."
 elif [ -f "openfhe-development/build/lib/libOPENFHEcore.so" ]; then
-    # Check if the existing build has GPU support
-    if [ -f "openfhe-development/build/lib/libOPENFHEgpu.so" ]; then
+    # Check if GPU support is already installed system-wide (not just built locally)
+    if [ -f "/usr/local/lib/libOPENFHEgpu.so" ]; then
+        echo "✅ OpenFHE with GPU support already installed system-wide, skipping build..."
+    elif [ -f "openfhe-development/build/lib/libOPENFHEgpu.so" ]; then
         echo "✅ OpenFHE with GPU support already built locally, installing..."
         cd openfhe-development/build
         sudo make install

@@ -30,15 +30,12 @@ message(STATUS "OpenMP enabled: ${USE_OPENFHE_OMP}")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Set path to our local OpenFHE installation
-set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/openfhe-install")
-set(OPENFHE_INSTALL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/openfhe-install")
-
-# OpenFHE
+# Try to find system-wide OpenFHE first, fallback to local installation
 find_package(OpenFHE)
 
 if (OpenFHE_FOUND)
     message(STATUS "OpenFHE found")
+    # Use system-wide OpenFHE includes and libraries
     set(OPENFHE_INCLUDES ${OPENFHE_INCLUDE})
     set(OPENFHE_LIBS ${OPENFHE_SHARED_LIBRARIES})
     
@@ -53,10 +50,24 @@ if (OpenFHE_FOUND)
         endif()
     endif()
 else()
-    message(STATUS "OpenFHE not found, using mock implementation")
-    add_compile_definitions(MOCK_OPENFHE=1)
-    set(OPENFHE_INCLUDES "")
-    set(OPENFHE_LIBS "")
+    # Fallback to local installation if system-wide not found
+    set(OPENFHE_INSTALL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/openfhe-install")
+    if(EXISTS "${OPENFHE_INSTALL_DIR}/include/openfhe/openfhe.h")
+        message(STATUS "Using local OpenFHE installation")
+        set(OPENFHE_INCLUDES 
+            ${OPENFHE_INSTALL_DIR}/include
+            ${OPENFHE_INSTALL_DIR}/include/openfhe
+            ${OPENFHE_INSTALL_DIR}/include/openfhe/core
+            ${OPENFHE_INSTALL_DIR}/include/openfhe/pke
+            ${OPENFHE_INSTALL_DIR}/include/openfhe/binfhe)
+        link_directories(${OPENFHE_INSTALL_DIR}/lib)
+        set(OPENFHE_LIBS OPENFHEpke OPENFHEcore)
+    else()
+        message(STATUS "OpenFHE not found, using mock implementation")
+        add_compile_definitions(MOCK_OPENFHE=1)
+        set(OPENFHE_INCLUDES "")
+        set(OPENFHE_LIBS "")
+    endif()
 endif()
 
 # Configure diagnostics mode
@@ -73,17 +84,8 @@ find_package(Eigen3 REQUIRED)
 # Compiler flags for performance
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -Wall -Wextra")
 
-# Set up include directories
-set(OPENFHE_INCLUDES 
-    ${OPENFHE_INSTALL_DIR}/include
-    ${OPENFHE_INSTALL_DIR}/include/openfhe
-    ${OPENFHE_INSTALL_DIR}/include/openfhe/core
-    ${OPENFHE_INSTALL_DIR}/include/openfhe/pke
-    ${OPENFHE_INSTALL_DIR}/include/openfhe/binfhe)
-
-# Set up library directories and rpath
-link_directories(${OPENFHE_INSTALL_DIR}/lib)
-set(CMAKE_INSTALL_RPATH "${CMAKE_CURRENT_BINARY_DIR};${OPENFHE_INSTALL_DIR}/lib")
+# Set up RPATH for runtime library loading
+set(CMAKE_INSTALL_RPATH "${CMAKE_CURRENT_BINARY_DIR};/usr/local/lib")
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 

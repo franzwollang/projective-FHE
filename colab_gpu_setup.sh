@@ -33,11 +33,21 @@ sudo apt-get update -qq
 sudo apt-get install -y build-essential cmake ninja-build git libomp-dev wget -qq
 
 # Build OpenFHE with CUDA if not already built
-if [ ! -f "openfhe-development/build/lib/libOPENFHEcore.so" ]; then
+if [ -f "/usr/local/lib/libOPENFHEcore.so" ]; then
+    echo "✅ OpenFHE already installed system-wide, skipping..."
+elif [ -f "openfhe-development/build/lib/libOPENFHEcore.so" ]; then
+    echo "✅ OpenFHE already built locally, installing..."
+    cd openfhe-development/build
+    sudo make install
+    cd "$WORKSPACE"
+    echo "✅ OpenFHE installed from local build"
+else
     echo "🔨 Building OpenFHE with CUDA support (4-8 minutes)..."
     
-    # Clone OpenFHE
-    git clone --depth 1 https://github.com/openfheorg/openfhe-development.git
+    # Clone OpenFHE if not already cloned
+    if [ ! -d "openfhe-development" ]; then
+        git clone --depth 1 https://github.com/openfheorg/openfhe-development.git
+    fi
     
     # Detect GPU architecture
     GPU_ARCH=$(nvidia-smi --query-gpu=compute_cap --format=csv,noheader,nounits | head -1 | tr -d '.')
@@ -62,8 +72,6 @@ if [ ! -f "openfhe-development/build/lib/libOPENFHEcore.so" ]; then
     
     cd "$WORKSPACE"
     echo "✅ OpenFHE built and installed"
-else
-    echo "✅ OpenFHE already built, skipping..."
 fi
 
 # Clone projective FHE repository
@@ -77,19 +85,26 @@ fi
 
 # Build GPU benchmark
 echo "🏗️ Building GPU benchmark..."
-cd projective-FHE/FHE/code/openfhe_prototype
+cd projective-FHE/openfhe_prototype
 
-mkdir -p build_gpu && cd build_gpu
+# Check if already built
+if [ -f "build_gpu/benchmark_modes" ]; then
+    echo "✅ GPU benchmark already built, skipping..."
+    cd build_gpu
+else
+    echo "🔨 Building GPU benchmark..."
+    mkdir -p build_gpu && cd build_gpu
 
-# Configure with GPU support
-cmake .. \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DENABLE_DIAGNOSTICS=OFF \
-    -DUSE_OPENFHE_GPU=ON \
-    -DCMAKE_PREFIX_PATH=/usr/local
+    # Configure with GPU support
+    cmake .. \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DENABLE_DIAGNOSTICS=OFF \
+        -DUSE_OPENFHE_GPU=ON \
+        -DCMAKE_PREFIX_PATH=/usr/local
 
-# Build benchmark
-make benchmark_modes -j4
+    # Build benchmark
+    make benchmark_modes -j4
+fi
 
 # Verify build
 echo "🔍 Verifying build..."

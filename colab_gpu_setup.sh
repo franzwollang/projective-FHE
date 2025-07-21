@@ -54,16 +54,46 @@ if [ ! -f "/usr/share/eigen3/cmake/Eigen3Config.cmake" ] && [ ! -f "/usr/lib/cma
     echo "✅ Eigen3 installed from source with CMake support"
 fi
 
-# Build OpenFHE with CUDA if not already built
-if [ -f "/usr/local/lib/libOPENFHEcore.so" ]; then
-    echo "✅ OpenFHE already installed system-wide, skipping build..."
+# Build OpenFHE with CUDA if not already built with GPU support
+if [ -f "/usr/local/lib/libOPENFHEcore.so" ] && [ -f "/usr/local/lib/libOPENFHEgpu.so" ]; then
+    echo "✅ OpenFHE with GPU support already installed system-wide, skipping build..."
 elif [ -f "openfhe-development/build/lib/libOPENFHEcore.so" ]; then
-    echo "✅ OpenFHE already built locally, installing..."
-    cd openfhe-development/build
-    sudo make install
-    sudo ldconfig  # Update library cache
-    cd "$WORKSPACE"
-    echo "✅ OpenFHE installed from local build"
+    # Check if the existing build has GPU support
+    if [ -f "openfhe-development/build/lib/libOPENFHEgpu.so" ]; then
+        echo "✅ OpenFHE with GPU support already built locally, installing..."
+        cd openfhe-development/build
+        sudo make install
+        sudo ldconfig  # Update library cache
+        cd "$WORKSPACE"
+        echo "✅ OpenFHE with GPU support installed from local build"
+    else
+        echo "🔄 Existing OpenFHE build lacks GPU support, rebuilding with GPU..."
+        cd openfhe-development
+        rm -rf build  # Clean existing build
+        mkdir -p build && cd build
+        
+        # Detect GPU architecture
+        GPU_ARCH=$(nvidia-smi --query-gpu=compute_cap --format=csv,noheader,nounits | head -1 | tr -d '.')
+        echo "🎯 Detected GPU architecture: $GPU_ARCH"
+        
+        # Configure with CUDA
+        cmake .. \
+            -DWITH_GPU=ON \
+            -DCUDA_ARCHITECTURES=$GPU_ARCH \
+            -DBUILD_EXAMPLES=OFF \
+            -DBUILD_BENCHMARKS=OFF \
+            -DBUILD_UNITTESTS=OFF \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=/usr/local
+        
+        # Build (use fewer cores to avoid OOM)
+        make -j4
+        sudo make install
+        sudo ldconfig  # Update library cache
+        
+        cd "$WORKSPACE"
+        echo "✅ OpenFHE rebuilt with GPU support and installed"
+    fi
     
     # Verify installation
     if [ -f "/usr/local/include/openfhe/pke/openfhe.h" ]; then
@@ -71,6 +101,13 @@ elif [ -f "openfhe-development/build/lib/libOPENFHEcore.so" ]; then
     else
         echo "❌ OpenFHE headers not found after installation - checking structure..."
         find /usr/local/include -name "*openfhe*" 2>/dev/null | head -5 || echo "No openfhe files in /usr/local/include"
+    fi
+    
+    # Verify GPU support
+    if [ -f "/usr/local/lib/libOPENFHEgpu.so" ]; then
+        echo "✅ OpenFHE GPU library installed: /usr/local/lib/libOPENFHEgpu.so"
+    else
+        echo "❌ OpenFHE GPU library not found - GPU support may not be available"
     fi
 else
     echo "🔨 Building OpenFHE with CUDA support (4-8 minutes)..."

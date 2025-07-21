@@ -43,16 +43,17 @@ if (OpenFHE_FOUND)
     message(STATUS "OpenFHE include directories: ${OPENFHE_INCLUDE}")
     message(STATUS "OpenFHE libraries: ${OPENFHE_SHARED_LIBRARIES}")
     
-    # Ensure we have the correct include directories
+    # Ensure we have the correct include directories with all OpenFHE modules
     if(NOT OPENFHE_INCLUDES)
-        set(OPENFHE_INCLUDES "/usr/local/include;/usr/local/include/openfhe;/usr/local/include/openfhe/core;/usr/local/include/openfhe/pke")
-        message(STATUS "Using default system include paths: ${OPENFHE_INCLUDES}")
+        set(OPENFHE_INCLUDES "/usr/local/include;/usr/local/include/openfhe;/usr/local/include/openfhe/core;/usr/local/include/openfhe/pke;/usr/local/include/openfhe/binfhe")
+        message(STATUS "Using complete OpenFHE include paths: ${OPENFHE_INCLUDES}")
     else()
-        # Add openfhe subdirectories to include path
+        # Add all openfhe subdirectories to include path
         list(APPEND OPENFHE_INCLUDES "/usr/local/include/openfhe")
         list(APPEND OPENFHE_INCLUDES "/usr/local/include/openfhe/core")
         list(APPEND OPENFHE_INCLUDES "/usr/local/include/openfhe/pke")
-        message(STATUS "Enhanced include paths: ${OPENFHE_INCLUDES}")
+        list(APPEND OPENFHE_INCLUDES "/usr/local/include/openfhe/binfhe")
+        message(STATUS "Enhanced complete include paths: ${OPENFHE_INCLUDES}")
     endif()
     
     # Configure OpenFHE with OpenMP if requested

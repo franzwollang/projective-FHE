@@ -66,8 +66,8 @@ elif [ -f "openfhe-development/build/lib/libOPENFHEcore.so" ]; then
     echo "✅ OpenFHE installed from local build"
     
     # Verify installation
-    if [ -f "/usr/local/include/openfhe.h" ]; then
-        echo "✅ OpenFHE headers installed correctly"
+    if [ -f "/usr/local/include/openfhe/pke/openfhe.h" ]; then
+        echo "✅ OpenFHE headers installed correctly at: /usr/local/include/openfhe/pke/openfhe.h"
     else
         echo "❌ OpenFHE headers not found after installation - checking structure..."
         find /usr/local/include -name "*openfhe*" 2>/dev/null | head -5 || echo "No openfhe files in /usr/local/include"

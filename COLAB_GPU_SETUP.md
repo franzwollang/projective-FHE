@@ -18,20 +18,26 @@ Complete setup guide to benchmark the projective FHE system with CUDA accelerati
 
 ## 🚀 Quick Start (One-Click Setup)
 
-### Option 1: Single Bash Script (Recommended)
+### Option 1: Two-Step Setup (Recommended)
 
 1. Open [Google Colab](https://colab.research.google.com/)
 2. **Switch to GPU runtime**: Runtime → Change runtime type → GPU → Save
-3. Create a new code cell and paste:
+3. **First cell** - Mount Google Drive:
+
+```python
+from google.colab import drive
+drive.mount('/content/drive')
+```
+
+4. **Second cell** - Run the complete setup:
 
 ```bash
-# Download and run the complete setup script
-!curl -fsSL https://raw.githubusercontent.com/franzwollang/projective-FHE/main/FHE/code/colab_gpu_setup.sh | bash
+!curl -fsSL https://raw.githubusercontent.com/franzwollang/projective-FHE/main/colab_gpu_setup.sh | bash
 ```
 
 That's it! The script will:
 
-- ✅ Mount Google Drive and create workspace
+- ✅ Create workspace on your Drive
 - ✅ Install build dependencies
 - ✅ Build OpenFHE with CUDA support
 - ✅ Clone and build the projective FHE prototype

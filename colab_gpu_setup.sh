@@ -3,21 +3,25 @@ set -e
 
 echo "🚀 Projective FHE GPU Benchmark Setup Script"
 echo "=============================================="
+echo "⚠️  PREREQUISITE: Mount Google Drive first by running in a separate cell:"
+echo "    from google.colab import drive; drive.mount('/content/drive')"
+echo ""
 
-# Mount Google Drive and setup workspace
-echo "📂 Setting up workspace..."
-python3 << 'EOF'
-from google.colab import drive
-import os
-drive.mount('/content/drive')
-workspace = '/content/drive/MyDrive/projective_fhe_benchmark'
-os.makedirs(workspace, exist_ok=True)
-print(f"✅ Workspace: {workspace}")
-EOF
+# Check if Drive is mounted
+if [ ! -d "/content/drive" ]; then
+    echo "❌ ERROR: Google Drive not mounted!"
+    echo "   Please run this in a separate cell first:"
+    echo "   from google.colab import drive"
+    echo "   drive.mount('/content/drive')"
+    exit 1
+fi
 
 # Set workspace
 WORKSPACE="/content/drive/MyDrive/projective_fhe_benchmark"
+mkdir -p "$WORKSPACE"
 cd "$WORKSPACE"
+
+echo "📂 Workspace: $WORKSPACE"
 
 # Check GPU
 echo "🎯 Checking GPU availability..."

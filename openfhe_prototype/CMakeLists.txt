@@ -43,6 +43,12 @@ if (OpenFHE_FOUND)
     message(STATUS "OpenFHE include directories: ${OPENFHE_INCLUDE}")
     message(STATUS "OpenFHE libraries: ${OPENFHE_SHARED_LIBRARIES}")
     
+    # Ensure we have the correct include directories
+    if(NOT OPENFHE_INCLUDES)
+        set(OPENFHE_INCLUDES "/usr/local/include")
+        message(STATUS "Using default system include path: ${OPENFHE_INCLUDES}")
+    endif()
+    
     # Configure OpenFHE with OpenMP if requested
     if(USE_OPENFHE_OMP)
         find_package(OpenMP)
@@ -96,33 +102,52 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 # Add shared library for utils and core classes
 add_library(openfhe_utils SHARED utils.cpp encoding.cpp projection.cpp monitor.cpp)
 target_include_directories(openfhe_utils PRIVATE ${OPENFHE_INCLUDES})
-target_link_libraries(openfhe_utils OPENFHEpke OPENFHEcore Eigen3::Eigen)
+if(OpenFHE_FOUND)
+    target_link_libraries(openfhe_utils ${OPENFHE_LIBS} Eigen3::Eigen)
+else()
+    target_link_libraries(openfhe_utils Eigen3::Eigen)
+endif()
 
 # Add executables
 add_executable(params params.cpp)
 target_include_directories(params PRIVATE ${OPENFHE_INCLUDES})
-target_link_libraries(params openfhe_utils OPENFHEpke OPENFHEcore)
-
-# encoding and projection are now part of openfhe_utils library
+if(OpenFHE_FOUND)
+    target_link_libraries(params openfhe_utils ${OPENFHE_LIBS})
+else()
+    target_link_libraries(params openfhe_utils)
+endif()
 
 # Pipeline executable
 # Build FHEPipeline as object library to avoid duplicate main symbols
 add_library(fhe_pipeline OBJECT pipeline.cpp)
 target_include_directories(fhe_pipeline PRIVATE ${OPENFHE_INCLUDES})
+if(OpenFHE_FOUND)
+    target_link_libraries(fhe_pipeline ${OPENFHE_LIBS})
+endif()
 target_compile_definitions(fhe_pipeline PRIVATE BUILD_AS_LIBRARY=1)
 
 # Pipeline standalone executable
 add_executable(pipeline pipeline.cpp)
 target_include_directories(pipeline PRIVATE ${OPENFHE_INCLUDES})
-target_link_libraries(pipeline openfhe_utils OPENFHEpke OPENFHEcore
-    $<$<BOOL:${USE_OPENFHE_GPU}>:OPENFHEgpu>
-)
+if(OpenFHE_FOUND)
+    target_link_libraries(pipeline openfhe_utils ${OPENFHE_LIBS}
+        $<$<BOOL:${USE_OPENFHE_GPU}>:OPENFHEgpu>
+    )
+else()
+    target_link_libraries(pipeline openfhe_utils
+        $<$<BOOL:${USE_OPENFHE_GPU}>:OPENFHEgpu>
+    )
+endif()
 target_compile_definitions(pipeline PRIVATE BUILD_AS_LIBRARY=0)
 
 # Parity test
 add_executable(test_parity test_parity.cpp)
 target_include_directories(test_parity PRIVATE ${OPENFHE_INCLUDES})
-target_link_libraries(test_parity openfhe_utils OPENFHEpke OPENFHEcore Eigen3::Eigen)
+if(OpenFHE_FOUND)
+    target_link_libraries(test_parity openfhe_utils ${OPENFHE_LIBS} Eigen3::Eigen)
+else()
+    target_link_libraries(test_parity openfhe_utils Eigen3::Eigen)
+endif()
 
 # Syntax test (can use mock)
 add_executable(syntax_test syntax_test.cpp)
@@ -131,6 +156,12 @@ target_link_libraries(syntax_test openfhe_utils)
 # Benchmark modes
 add_executable(benchmark_modes benchmark_modes.cpp $<TARGET_OBJECTS:fhe_pipeline>)
 target_include_directories(benchmark_modes PRIVATE ${OPENFHE_INCLUDES})
-target_link_libraries(benchmark_modes openfhe_utils OPENFHEpke OPENFHEcore
-    $<$<BOOL:${USE_OPENFHE_GPU}>:OPENFHEgpu>
-) 
+if(OpenFHE_FOUND)
+    target_link_libraries(benchmark_modes openfhe_utils ${OPENFHE_LIBS}
+        $<$<BOOL:${USE_OPENFHE_GPU}>:OPENFHEgpu>
+    )
+else()
+    target_link_libraries(benchmark_modes openfhe_utils
+        $<$<BOOL:${USE_OPENFHE_GPU}>:OPENFHEgpu>
+    )
+endif() 

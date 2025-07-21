@@ -61,8 +61,17 @@ elif [ -f "openfhe-development/build/lib/libOPENFHEcore.so" ]; then
     echo "✅ OpenFHE already built locally, installing..."
     cd openfhe-development/build
     sudo make install
+    sudo ldconfig  # Update library cache
     cd "$WORKSPACE"
     echo "✅ OpenFHE installed from local build"
+    
+    # Verify installation
+    if [ -f "/usr/local/include/openfhe.h" ]; then
+        echo "✅ OpenFHE headers installed correctly"
+    else
+        echo "❌ OpenFHE headers not found after installation - checking structure..."
+        find /usr/local/include -name "*openfhe*" 2>/dev/null | head -5 || echo "No openfhe files in /usr/local/include"
+    fi
 else
     echo "🔨 Building OpenFHE with CUDA support (4-8 minutes)..."
     
@@ -91,6 +100,7 @@ else
     # Build (use fewer cores to avoid OOM)
     make -j4
     sudo make install
+    sudo ldconfig  # Update library cache
     
     cd "$WORKSPACE"
     echo "✅ OpenFHE built and installed"

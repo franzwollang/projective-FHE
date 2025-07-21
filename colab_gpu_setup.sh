@@ -93,6 +93,8 @@ if [ -f "build_gpu/benchmark_modes" ]; then
     cd build_gpu
 else
     echo "🔨 Building GPU benchmark..."
+    # Clean any existing build directory to avoid CMake cache conflicts
+    rm -rf build_gpu
     mkdir -p build_gpu && cd build_gpu
 
     # Configure with GPU support

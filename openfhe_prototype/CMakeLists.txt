@@ -45,8 +45,12 @@ if (OpenFHE_FOUND)
     
     # Ensure we have the correct include directories
     if(NOT OPENFHE_INCLUDES)
-        set(OPENFHE_INCLUDES "/usr/local/include")
-        message(STATUS "Using default system include path: ${OPENFHE_INCLUDES}")
+        set(OPENFHE_INCLUDES "/usr/local/include;/usr/local/include/openfhe")
+        message(STATUS "Using default system include paths: ${OPENFHE_INCLUDES}")
+    else()
+        # Add openfhe subdirectory to include path
+        list(APPEND OPENFHE_INCLUDES "/usr/local/include/openfhe")
+        message(STATUS "Enhanced include paths: ${OPENFHE_INCLUDES}")
     endif()
     
     # Configure OpenFHE with OpenMP if requested

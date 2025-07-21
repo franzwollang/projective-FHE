@@ -125,6 +125,12 @@ else
     rm -rf build_gpu
     mkdir -p build_gpu && cd build_gpu
 
+    # Debug: Check OpenFHE installation structure
+    echo "🔍 Checking OpenFHE installation..."
+    ls -la /usr/local/include/ | grep -i openfhe || echo "No openfhe directory in /usr/local/include/"
+    ls -la /usr/local/include/openfhe/ 2>/dev/null | head -5 || echo "No /usr/local/include/openfhe/ directory"
+    find /usr/local/include -name "*openfhe*" -type f | head -3 || echo "No openfhe files found"
+
     # Configure with GPU support (use system-wide OpenFHE only)
     cmake .. \
         -DCMAKE_BUILD_TYPE=Release \

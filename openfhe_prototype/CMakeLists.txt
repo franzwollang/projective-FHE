@@ -37,11 +37,18 @@ if (OpenFHE_FOUND)
     message(STATUS "OpenFHE found")
     # Use system-wide OpenFHE includes and libraries
     set(OPENFHE_INCLUDES ${OPENFHE_INCLUDE})
-    set(OPENFHE_LIBS ${OPENFHE_SHARED_LIBRARIES})
+    # Use comprehensive library list for proper linking
+    set(OPENFHE_LIBS ${OpenFHE_SHARED_LIBRARIES})
+    if(NOT OPENFHE_LIBS)
+        # Fallback to manual library specification for complete linking
+        set(OPENFHE_LIBS "OPENFHEcore;OPENFHEpke;OPENFHEbinfhe")
+        message(STATUS "Using manual OpenFHE library list: ${OPENFHE_LIBS}")
+    endif()
     
     # Debug: Print OpenFHE include directories
     message(STATUS "OpenFHE include directories: ${OPENFHE_INCLUDE}")
-    message(STATUS "OpenFHE libraries: ${OPENFHE_SHARED_LIBRARIES}")
+    message(STATUS "OpenFHE shared libraries: ${OpenFHE_SHARED_LIBRARIES}")
+    message(STATUS "Final OPENFHE_LIBS: ${OPENFHE_LIBS}")
     
     # Ensure we have the correct include directories with all OpenFHE modules
     if(NOT OPENFHE_INCLUDES)
@@ -60,6 +67,15 @@ if (OpenFHE_FOUND)
     foreach(INCLUDE_PATH ${OPENFHE_INCLUDES})
         include_directories(${INCLUDE_PATH})
     endforeach()
+    
+    # Add OpenFHE library directories
+    if(OpenFHE_LIBDIR)
+        link_directories(${OpenFHE_LIBDIR})
+        message(STATUS "Added OpenFHE library directory: ${OpenFHE_LIBDIR}")
+    else()
+        link_directories("/usr/local/lib")
+        message(STATUS "Using default library directory: /usr/local/lib")
+    endif()
     
     # Configure OpenFHE with OpenMP if requested
     if(USE_OPENFHE_OMP)

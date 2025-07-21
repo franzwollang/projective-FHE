@@ -27,14 +27,21 @@ echo "📂 Workspace: $WORKSPACE"
 echo "🎯 Checking GPU availability..."
 nvidia-smi --query-gpu=name,compute_cap --format=csv,noheader
 
-# Install dependencies
+# Always install system dependencies (they're fast and idempotent)
 echo "🔧 Installing build dependencies..."
 sudo apt-get update -qq
 sudo apt-get install -y build-essential cmake ninja-build git libomp-dev wget libeigen3-dev pkg-config -qq
 
+# Verify critical dependencies
+echo "🔍 Verifying dependencies..."
+if ! dpkg -l | grep -q libeigen3-dev; then
+    echo "❌ Eigen3 not found, installing..."
+    sudo apt-get install -y libeigen3-dev -qq
+fi
+
 # Build OpenFHE with CUDA if not already built
 if [ -f "/usr/local/lib/libOPENFHEcore.so" ]; then
-    echo "✅ OpenFHE already installed system-wide, skipping..."
+    echo "✅ OpenFHE already installed system-wide, skipping build..."
 elif [ -f "openfhe-development/build/lib/libOPENFHEcore.so" ]; then
     echo "✅ OpenFHE already built locally, installing..."
     cd openfhe-development/build

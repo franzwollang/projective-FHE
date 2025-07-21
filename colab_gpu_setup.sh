@@ -162,4 +162,4 @@ ls -la "$WORKSPACE"/*"$TIMESTAMP"*
 
 echo ""
 echo "🎉 GPU benchmark complete! Check your Google Drive for results."
-echo "Expected: 10-20x speedup, sub-15ms cycles, interactive FHE enabled! 🚀" 
+echo "Expected: 10-20x speedup, sub-15ms cycles, interactive FHE enabled! 🚀"

@@ -117,6 +117,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named syntax_test
+
+# Build rule for target.
+syntax_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 syntax_test
+.PHONY : syntax_test
+
+# fast build rule for target.
+syntax_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/syntax_test.dir/build.make CMakeFiles/syntax_test.dir/build
+.PHONY : syntax_test/fast
+
+#=============================================================================
 # Target rules for targets named openfhe_utils
 
 # Build rule for target.
@@ -130,30 +143,17 @@ openfhe_utils/fast:
 .PHONY : openfhe_utils/fast
 
 #=============================================================================
-# Target rules for targets named params
+# Target rules for targets named workload_100_cycles
 
 # Build rule for target.
-params: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 params
-.PHONY : params
+workload_100_cycles: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 workload_100_cycles
+.PHONY : workload_100_cycles
 
 # fast build rule for target.
-params/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/params.dir/build.make CMakeFiles/params.dir/build
-.PHONY : params/fast
-
-#=============================================================================
-# Target rules for targets named fhe_pipeline
-
-# Build rule for target.
-fhe_pipeline: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 fhe_pipeline
-.PHONY : fhe_pipeline
-
-# fast build rule for target.
-fhe_pipeline/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/fhe_pipeline.dir/build.make CMakeFiles/fhe_pipeline.dir/build
-.PHONY : fhe_pipeline/fast
+workload_100_cycles/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/workload_100_cycles.dir/build.make CMakeFiles/workload_100_cycles.dir/build
+.PHONY : workload_100_cycles/fast
 
 #=============================================================================
 # Target rules for targets named pipeline
@@ -169,67 +169,17 @@ pipeline/fast:
 .PHONY : pipeline/fast
 
 #=============================================================================
-# Target rules for targets named test_parity
+# Target rules for targets named simple_workload_test
 
 # Build rule for target.
-test_parity: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_parity
-.PHONY : test_parity
+simple_workload_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 simple_workload_test
+.PHONY : simple_workload_test
 
 # fast build rule for target.
-test_parity/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_parity.dir/build.make CMakeFiles/test_parity.dir/build
-.PHONY : test_parity/fast
-
-#=============================================================================
-# Target rules for targets named syntax_test
-
-# Build rule for target.
-syntax_test: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 syntax_test
-.PHONY : syntax_test
-
-# fast build rule for target.
-syntax_test/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/syntax_test.dir/build.make CMakeFiles/syntax_test.dir/build
-.PHONY : syntax_test/fast
-
-#=============================================================================
-# Target rules for targets named benchmark_modes
-
-# Build rule for target.
-benchmark_modes: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 benchmark_modes
-.PHONY : benchmark_modes
-
-# fast build rule for target.
-benchmark_modes/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/benchmark_modes.dir/build.make CMakeFiles/benchmark_modes.dir/build
-.PHONY : benchmark_modes/fast
-
-benchmark_modes.o: benchmark_modes.cpp.o
-.PHONY : benchmark_modes.o
-
-# target to build an object file
-benchmark_modes.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/benchmark_modes.dir/build.make CMakeFiles/benchmark_modes.dir/benchmark_modes.cpp.o
-.PHONY : benchmark_modes.cpp.o
-
-benchmark_modes.i: benchmark_modes.cpp.i
-.PHONY : benchmark_modes.i
-
-# target to preprocess a source file
-benchmark_modes.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/benchmark_modes.dir/build.make CMakeFiles/benchmark_modes.dir/benchmark_modes.cpp.i
-.PHONY : benchmark_modes.cpp.i
-
-benchmark_modes.s: benchmark_modes.cpp.s
-.PHONY : benchmark_modes.s
-
-# target to generate assembly for a file
-benchmark_modes.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/benchmark_modes.dir/build.make CMakeFiles/benchmark_modes.dir/benchmark_modes.cpp.s
-.PHONY : benchmark_modes.cpp.s
+simple_workload_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/simple_workload_test.dir/build.make CMakeFiles/simple_workload_test.dir/build
+.PHONY : simple_workload_test/fast
 
 encoding.o: encoding.cpp.o
 .PHONY : encoding.o
@@ -279,36 +229,11 @@ monitor.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/openfhe_utils.dir/build.make CMakeFiles/openfhe_utils.dir/monitor.cpp.s
 .PHONY : monitor.cpp.s
 
-params.o: params.cpp.o
-.PHONY : params.o
-
-# target to build an object file
-params.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/params.dir/build.make CMakeFiles/params.dir/params.cpp.o
-.PHONY : params.cpp.o
-
-params.i: params.cpp.i
-.PHONY : params.i
-
-# target to preprocess a source file
-params.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/params.dir/build.make CMakeFiles/params.dir/params.cpp.i
-.PHONY : params.cpp.i
-
-params.s: params.cpp.s
-.PHONY : params.s
-
-# target to generate assembly for a file
-params.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/params.dir/build.make CMakeFiles/params.dir/params.cpp.s
-.PHONY : params.cpp.s
-
 pipeline.o: pipeline.cpp.o
 .PHONY : pipeline.o
 
 # target to build an object file
 pipeline.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/fhe_pipeline.dir/build.make CMakeFiles/fhe_pipeline.dir/pipeline.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/pipeline.dir/build.make CMakeFiles/pipeline.dir/pipeline.cpp.o
 .PHONY : pipeline.cpp.o
 
@@ -317,7 +242,6 @@ pipeline.i: pipeline.cpp.i
 
 # target to preprocess a source file
 pipeline.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/fhe_pipeline.dir/build.make CMakeFiles/fhe_pipeline.dir/pipeline.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/pipeline.dir/build.make CMakeFiles/pipeline.dir/pipeline.cpp.i
 .PHONY : pipeline.cpp.i
 
@@ -326,7 +250,6 @@ pipeline.s: pipeline.cpp.s
 
 # target to generate assembly for a file
 pipeline.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/fhe_pipeline.dir/build.make CMakeFiles/fhe_pipeline.dir/pipeline.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/pipeline.dir/build.make CMakeFiles/pipeline.dir/pipeline.cpp.s
 .PHONY : pipeline.cpp.s
 
@@ -354,6 +277,30 @@ projection.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/openfhe_utils.dir/build.make CMakeFiles/openfhe_utils.dir/projection.cpp.s
 .PHONY : projection.cpp.s
 
+simple_workload_test.o: simple_workload_test.cpp.o
+.PHONY : simple_workload_test.o
+
+# target to build an object file
+simple_workload_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/simple_workload_test.dir/build.make CMakeFiles/simple_workload_test.dir/simple_workload_test.cpp.o
+.PHONY : simple_workload_test.cpp.o
+
+simple_workload_test.i: simple_workload_test.cpp.i
+.PHONY : simple_workload_test.i
+
+# target to preprocess a source file
+simple_workload_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/simple_workload_test.dir/build.make CMakeFiles/simple_workload_test.dir/simple_workload_test.cpp.i
+.PHONY : simple_workload_test.cpp.i
+
+simple_workload_test.s: simple_workload_test.cpp.s
+.PHONY : simple_workload_test.s
+
+# target to generate assembly for a file
+simple_workload_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/simple_workload_test.dir/build.make CMakeFiles/simple_workload_test.dir/simple_workload_test.cpp.s
+.PHONY : simple_workload_test.cpp.s
+
 syntax_test.o: syntax_test.cpp.o
 .PHONY : syntax_test.o
 
@@ -378,35 +325,12 @@ syntax_test.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/syntax_test.dir/build.make CMakeFiles/syntax_test.dir/syntax_test.cpp.s
 .PHONY : syntax_test.cpp.s
 
-test_parity.o: test_parity.cpp.o
-.PHONY : test_parity.o
-
-# target to build an object file
-test_parity.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_parity.dir/build.make CMakeFiles/test_parity.dir/test_parity.cpp.o
-.PHONY : test_parity.cpp.o
-
-test_parity.i: test_parity.cpp.i
-.PHONY : test_parity.i
-
-# target to preprocess a source file
-test_parity.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_parity.dir/build.make CMakeFiles/test_parity.dir/test_parity.cpp.i
-.PHONY : test_parity.cpp.i
-
-test_parity.s: test_parity.cpp.s
-.PHONY : test_parity.s
-
-# target to generate assembly for a file
-test_parity.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_parity.dir/build.make CMakeFiles/test_parity.dir/test_parity.cpp.s
-.PHONY : test_parity.cpp.s
-
 utils.o: utils.cpp.o
 .PHONY : utils.o
 
 # target to build an object file
 utils.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/syntax_test.dir/build.make CMakeFiles/syntax_test.dir/utils.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/openfhe_utils.dir/build.make CMakeFiles/openfhe_utils.dir/utils.cpp.o
 .PHONY : utils.cpp.o
 
@@ -415,6 +339,7 @@ utils.i: utils.cpp.i
 
 # target to preprocess a source file
 utils.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/syntax_test.dir/build.make CMakeFiles/syntax_test.dir/utils.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/openfhe_utils.dir/build.make CMakeFiles/openfhe_utils.dir/utils.cpp.i
 .PHONY : utils.cpp.i
 
@@ -423,8 +348,33 @@ utils.s: utils.cpp.s
 
 # target to generate assembly for a file
 utils.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/syntax_test.dir/build.make CMakeFiles/syntax_test.dir/utils.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/openfhe_utils.dir/build.make CMakeFiles/openfhe_utils.dir/utils.cpp.s
 .PHONY : utils.cpp.s
+
+workload_100_cycles.o: workload_100_cycles.cpp.o
+.PHONY : workload_100_cycles.o
+
+# target to build an object file
+workload_100_cycles.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/workload_100_cycles.dir/build.make CMakeFiles/workload_100_cycles.dir/workload_100_cycles.cpp.o
+.PHONY : workload_100_cycles.cpp.o
+
+workload_100_cycles.i: workload_100_cycles.cpp.i
+.PHONY : workload_100_cycles.i
+
+# target to preprocess a source file
+workload_100_cycles.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/workload_100_cycles.dir/build.make CMakeFiles/workload_100_cycles.dir/workload_100_cycles.cpp.i
+.PHONY : workload_100_cycles.cpp.i
+
+workload_100_cycles.s: workload_100_cycles.cpp.s
+.PHONY : workload_100_cycles.s
+
+# target to generate assembly for a file
+workload_100_cycles.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/workload_100_cycles.dir/build.make CMakeFiles/workload_100_cycles.dir/workload_100_cycles.cpp.s
+.PHONY : workload_100_cycles.cpp.s
 
 # Help Target
 help:
@@ -434,40 +384,35 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... benchmark_modes"
-	@echo "... fhe_pipeline"
 	@echo "... openfhe_utils"
-	@echo "... params"
 	@echo "... pipeline"
+	@echo "... simple_workload_test"
 	@echo "... syntax_test"
-	@echo "... test_parity"
-	@echo "... benchmark_modes.o"
-	@echo "... benchmark_modes.i"
-	@echo "... benchmark_modes.s"
+	@echo "... workload_100_cycles"
 	@echo "... encoding.o"
 	@echo "... encoding.i"
 	@echo "... encoding.s"
 	@echo "... monitor.o"
 	@echo "... monitor.i"
 	@echo "... monitor.s"
-	@echo "... params.o"
-	@echo "... params.i"
-	@echo "... params.s"
 	@echo "... pipeline.o"
 	@echo "... pipeline.i"
 	@echo "... pipeline.s"
 	@echo "... projection.o"
 	@echo "... projection.i"
 	@echo "... projection.s"
+	@echo "... simple_workload_test.o"
+	@echo "... simple_workload_test.i"
+	@echo "... simple_workload_test.s"
 	@echo "... syntax_test.o"
 	@echo "... syntax_test.i"
 	@echo "... syntax_test.s"
-	@echo "... test_parity.o"
-	@echo "... test_parity.i"
-	@echo "... test_parity.s"
 	@echo "... utils.o"
 	@echo "... utils.i"
 	@echo "... utils.s"
+	@echo "... workload_100_cycles.o"
+	@echo "... workload_100_cycles.i"
+	@echo "... workload_100_cycles.s"
 .PHONY : help
 
 
